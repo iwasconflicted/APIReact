@@ -7,17 +7,26 @@ interface User {
   username: string;
 }
 
-const FetchingAxios = () => {
+const LoadingIndicator = () => {
   //we need a useState to help us hold the state of our users
   const [users, setUsers] = useState<User[]>([]);
-  const [error, setError] = useState('')
+  const [error, setError] = useState('');
+  //UseState for our isLoading indicator
+  const [isLoading, setIsLoading] = useState(false);
 
   ///Create a function to helps us fetch our data with axios
   const FetchData = () => {
+    setIsLoading(true);
     axios
-      .get("https://jsonplaceholder.typicode.com/users")
-      .then((response) => setUsers(response.data))
-      .catch(error => setError(error.message)
+      .get("https://jsonplaceholder.typicode.com/xusers")
+      .then((response) => {
+        setUsers(response.data)
+        setIsLoading(false);
+      } )
+      .catch(error => {
+        setError(error.message)
+        setIsLoading(false);
+      }
       )
   };
 
@@ -35,9 +44,10 @@ const FetchingAxios = () => {
           <li key={user.id}>{user.username}</li>
         ))}
         { error && <p className="text-danger">{error}</p>}
+        { isLoading && <div className="spinner-border"></div>}
       </ul>
     </>
   );
 };
 
-export default FetchingAxios;
+export default LoadingIndicator;
