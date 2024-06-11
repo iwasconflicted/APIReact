@@ -1,5 +1,5 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
+import apiClient, {CanceledError} from "../services/apiClient";
 
 interface User {
   id: number;
@@ -17,7 +17,7 @@ const DeleteData = () => {
   ///Create a function to helps us fetch our data with axios
   const FetchData = () => {
     setIsLoading(true);
-    axios
+    apiClient
       .get("https://jsonplaceholder.typicode.com/users")
       .then((response) => {
         setUsers(response.data)
