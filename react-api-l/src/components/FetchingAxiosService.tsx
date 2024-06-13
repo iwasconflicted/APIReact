@@ -1,28 +1,8 @@
-import { useEffect, useState } from "react";
-
-import userService, { User } from "../services/userService";
-
+import useUsers from "../hooks/useUsers";
 
 
 const FetchingAxiosService = () => {
-  //we need a useState to help us hold the state of our users
-  const [users, setUsers] = useState<User[]>([]);
-  const [error, setError] = useState('')
-
-  ///Create a function to helps us fetch our data with axios
-  const FetchData = () => {
-    const {request} = userService.getAll<User>()
-    request
-      .then((response) => setUsers(response.data))
-      .catch(error => setError(error.message)
-      )
-  };
-
-  //UseEffect to help us with our FetchingData
-
-  useEffect(() => {
-    FetchData();
-  }, []);
+  const {users,setUsers,error,setError,isLoading,setIsLoading} = useUsers();
 
   return (
     <>
