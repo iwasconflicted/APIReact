@@ -1,13 +1,9 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import userService, { User } from "../services/userService";
 
-interface User {
-  id: number;
-  name: string;
 
-}
 
-const CreateData = () => {
+const CreateDataService = () => {
   //we need a useState to help us hold the state of our users
   const [users, setUsers] = useState<User[]>([]);
   const [error, setError] = useState("");
@@ -17,8 +13,8 @@ const CreateData = () => {
   ///Create a function to helps us fetch our data with axios
   const FetchData = () => {
     setIsLoading(true);
-    axios
-      .get("https://jsonplaceholder.typicode.com/users")
+      const {request} = userService.getAll<User>()
+      request
       .then((response) => {
         setUsers(response.data);
         setIsLoading(false);
@@ -44,7 +40,7 @@ const CreateData = () => {
     //set our users and spread all users and add our new user
     setUsers([newUser,...users])
     //we need to send this updated data to our back-end
-    axios.post('https://jsonplaceholder.typicode.com/users',newUser)
+    userService.create(newUser)
     .then(response => setUsers([response.data,...users]))
     .catch(error => {
       setError(error.message);
@@ -82,4 +78,4 @@ const CreateData = () => {
   );
 };
 
-export default CreateData;
+export default CreateDataService;

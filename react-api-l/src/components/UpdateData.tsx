@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import apiClient,{CanceledError} from "../services/apiClient";
+import axios from "axios";
+
 
 interface User {
   id: number;
   name: string;
- 
 }
 
 const UpdateData = () => {
@@ -17,7 +17,7 @@ const UpdateData = () => {
   ///Create a function to helps us fetch our data with axios
   const FetchData = () => {
     setIsLoading(true);
-    apiClient
+    axios
       .get("https://jsonplaceholder.typicode.com/users")
       .then((response) => {
         setUsers(response.data);
@@ -35,26 +35,22 @@ const UpdateData = () => {
     FetchData();
   }, []);
 
-  ///Lets create a helper function to help us delete our users from our front end UI
+  ///Lets create a helper function to help us Update our user
+  const updateUser = (user:User) => {
 
-
-const UpdateUser = (user: User) => {
-
-  const originalUsers = [...users]
-  const updatedUser = {...user, name: user.name + "!"}
-  setUsers(users.map(u => u.id === user.id ? updatedUser : u))
-  apiClient.put('https://jsonplaceholder.typicode.com/users/' + user.id, updatedUser)
-  .catch(error => {
-    setError(error.message)
-    setUsers(originalUsers)
-  })
-
-}
-
+    const originalUsers = [...users]
+    const updatedUser = {...user, name: user.name + "!"}
+    setUsers(users.map(u => u.id === user.id ? updatedUser : u))
+    axios.put('https://jsonplaceholder.typicode.com/users/' + user.id,updatedUser)
+    .catch(error => {
+      setError(error.message)
+      setUsers(originalUsers)
+    })
+  }
 
   return (
     <>
-      <h1 className="text-center">CRUD Update with Axios</h1>
+      <h1 className="text-center">CRUD Update with apiClient</h1>
       
       <ul className="list-group">
         {users.map((user) => (
@@ -63,8 +59,7 @@ const UpdateUser = (user: User) => {
             key={user.id}
           >
             {user.name}
-            <button
-              className="btn btn-outline-secondary" onClick={() => UpdateUser(user)}>Update</button>{" "}
+            <button className="btn btn-outline-secondary" onClick={() => updateUser(user)}>Update</button>{" "}
           </li>
         ))}
 

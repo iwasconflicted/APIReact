@@ -9,6 +9,7 @@ import LoadingIndicator from "./components/LoadingIndictator"
 import DeleteData from "./components/DeleteData"
 import CreateData from "./components/CreateData"
 import UpdateData from "./components/UpdateData"
+import DeleteDataService from "./components/DeleteDataService"
 
 
 const App = () => {
@@ -18,7 +19,8 @@ const [category, setCategory] = useState('')
   return (
     <>
       <h1 className="text-center">React Fetching Data Examples, Using Axios, services, Http, CRUD</h1>
-      <UpdateData/>
+      <DeleteDataService/>
+      {/* <UpdateData/> */}
       {/* <CreateData/> */}
       {/* <DeleteData/> */}
       {/* <LoadingIndicator/> */}
